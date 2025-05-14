@@ -1,0 +1,57 @@
+﻿@page "/login"
+@inject NavigationManager Navigation
+@inject HttpClient Http
+@using SisONGFront.Dto
+
+<h3>Login</h3>
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Email:</label>
+        <InputText @bind-Value="loginModel.Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Senha:</label>
+        <InputText @bind-Value="loginModel.Senha" class="form-control" type="password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Entrar</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="text-danger mt-2">@errorMessage</div>
+    }
+</EditForm>
+
+@code {
+    private LoginDto loginModel = new();
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            // Aqui você chama sua API para autenticar
+            var response = await Http.PostAsJsonAsync("api/usuario/login", loginModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Redirecionar para home ou dashboard
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Email ou senha inválidos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Erro ao processar login.";
+        }
+    }
+}
