@@ -45,6 +45,22 @@ namespace SisONGFront.Controllers
             return View(usuario);
         }
 
+        public IActionResult PublicHome()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                // Redireciona baseado no perfil
+                if (User.IsInRole("Voluntario"))
+                    return RedirectToAction("Index", "Voluntario");
+                if (User.IsInRole("Doador"))
+                    return RedirectToAction("Index", "Doador");
+                if (User.IsInRole("Administrador"))
+                    return RedirectToAction("Index", "Administrador");
+            }
+
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
