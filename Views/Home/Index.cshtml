@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model SisONGFront.Dtos.UsuarioDto
+
+<h3>Bem-vindo, @Model?.Nome</h3>
+<p>Perfil: @Model?.Perfil</p>
+
+@if (Model?.Perfil == "Voluntario")
+{
+    <p>Habilidades: @Model?.Habilidades</p>
+    <p>Disponibilidade: @Model?.Disponibilidade</p>
+    <p>Histórico: @Model?.HistoricoParticipacao</p>
+}
+else if (Model?.Perfil == "Doador")
+{
+    <p>CPF: @Model?.Cpf</p>
+    <p>Endereço: @Model?.Endereco</p>
+}
+else if (Model?.Perfil == "Administrador")
+{
+    <p>Cargo: @Model?.Cargo</p>
+}
+
