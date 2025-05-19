@@ -34,9 +34,12 @@
                         <a class="nav-link text-dark" asp-controller="Voluntario" asp-action="Index">Painel do Voluntário</a>
                     </li>
                 }
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Sair</a>
-                </li>
+                @if (user.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Sair</a>
+                    </li>
+                }
             </ul>
         </nav>
         <main class="p-4 flex-grow-1">

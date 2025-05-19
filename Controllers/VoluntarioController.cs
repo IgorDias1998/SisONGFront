@@ -42,6 +42,30 @@ namespace SisONGFront.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult CadastrarVoluntario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarVoluntario(VoluntarioCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var response = await _httpClient.PostAsJsonAsync("/api/Voluntario", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["MensagemSucesso"] = "Voluntário cadastrado com sucesso!";
+                return RedirectToAction("Index", "Login");
+            }
+
+            ModelState.AddModelError("", "Erro ao cadastrar voluntário.");
+            return View(dto);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Participar(int eventoId)
         {

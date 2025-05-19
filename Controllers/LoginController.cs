@@ -77,7 +77,7 @@ namespace SisONG.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("PublicHome", "Home");
         }
 
         public IActionResult AcessoNegado() => View();
