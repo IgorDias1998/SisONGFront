@@ -1,0 +1,55 @@
+﻿@model PainelVoluntarioViewModel
+@{
+    ViewData["Title"] = "Painel do Voluntário";
+}
+
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger">@TempData["Erro"]</div>
+}
+
+<h2>Painel do Voluntário</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Próximos Eventos</h4>
+        <ul class="list-group">
+            @foreach (var evento in Model.EventosFuturos)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>@evento.Titulo</strong><br />
+                        @evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local
+                    </div>
+                    <form asp-action="Participar" asp-controller="Voluntario" method="post" class="ms-3">
+                        <input type="hidden" name="eventoId" value="@evento.Id" />
+                        <button type="submit" class="btn btn-sm btn-primary">Participar</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h4>Histórico de Participação</h4>
+        <ul class="list-group">
+            @foreach (var evento in Model.HistoricoParticipacao)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>@evento.Titulo</strong><br />
+                        @evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local
+                    </div>
+
+                    @if (evento.DataHora > DateTime.Now)
+                    {
+                        <form asp-action="CancelarParticipacao" asp-controller="Voluntario" method="post" class="ms-3">
+                            <input type="hidden" name="eventoId" value="@evento.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                        </form>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+
+</div>

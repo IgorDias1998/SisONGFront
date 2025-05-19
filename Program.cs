@@ -10,6 +10,8 @@ builder.Services.AddHttpClient("SisONGApi", client =>
     client.BaseAddress = new Uri("https://localhost:7090/api/");
 });
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped(sp =>
     sp.GetRequiredService<IHttpClientFactory>().CreateClient("SisONGApi"));
 
