@@ -1,0 +1,38 @@
+﻿@model List<SisONGFront.Dtos.DoacaoReadDto>
+
+@{
+    ViewData["Title"] = "Histórico de Doações";
+}
+
+<h2>Histórico de Doações</h2>
+
+@if (!Model.Any())
+{
+    <p>Você ainda não realizou nenhuma doação.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doacao in Model)
+            {
+                <tr>
+                    <td>@doacao.Tipo</td>
+                    <td>@(doacao.Valor?.ToString("C") ?? "-")</td>
+                    <td>@doacao.Item ?? "-"</td>
+                    <td>@(doacao.Quantidade?.ToString() ?? "-")</td>
+                    <td>@doacao.Data?.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

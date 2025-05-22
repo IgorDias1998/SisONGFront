@@ -15,8 +15,10 @@
 }
 else if (Model?.Perfil == "Doador")
 {
-    <p>CPF: @Model?.Cpf</p>
-    <p>Endereço: @Model?.Endereco</p>
+    <p>E-mail: @Model?.Email</p>
+
+    <a class="btn btn-success" asp-controller="Doacao" asp-action="RealizarDoacao">Fazer Doação</a>
+    <a class="btn btn-success" asp-controller="Doacao" asp-action="Historico">Histórico de Doações</a>
 }
 else if (Model?.Perfil == "Administrador")
 {
