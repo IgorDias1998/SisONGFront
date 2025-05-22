@@ -4,6 +4,7 @@
 @{
     var user = HttpContextAccessor.HttpContext.User;
     var perfil = user.FindFirst(ClaimTypes.Role)?.Value;
+    var isAuthenticated = user.Identity.IsAuthenticated;
 }
 
 <!DOCTYPE html>
@@ -21,27 +22,54 @@
         <nav class="bg-light border-end p-3" style="width: 250px; height: 100vh;">
             <h4>SisONG</h4>
             <ul class="nav flex-column">
+
+                <!-- Menu sempre visível -->
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Home" asp-action="PublicHome">Início</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Login" asp-action="Index">Login</a>
-                </li>
-                @if (user.Identity.IsAuthenticated && perfil == "Voluntario")
+                <!-- Menu para Administrador -->
+                @if (isAuthenticated && perfil == "Administrador")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-bold" asp-controller="Admin" asp-action="Dashboard">Área Administrativa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Admin" asp-action="Voluntarios">Voluntários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Admin" asp-action="Doadores">Doadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Admin" asp-action="Eventos">Eventos</a>
+                    </li>
+                }
+
+                <!-- Menu para Voluntário -->
+                @if (isAuthenticated && perfil == "Voluntario")
                 {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Voluntario" asp-action="Index">Painel do Voluntário</a>
                     </li>
                 }
-                @if (user.Identity.IsAuthenticated)
+
+                <!-- Login ou Sair -->
+                @if (!isAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Login" asp-action="Index">Login</a>
+                    </li>
+                }
+                else
                 {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Sair</a>
                     </li>
                 }
+
             </ul>
         </nav>
+
         <main class="p-4 flex-grow-1">
             @RenderBody()
         </main>

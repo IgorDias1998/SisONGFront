@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Dashboard - Administração";
+}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Voluntários</h5>
+                <p class="card-text">Gerencie e visualize os voluntários cadastrados.</p>
+                <a class="btn btn-light" asp-controller="Admin" asp-action="Voluntarios">Ver detalhes</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Doadores</h5>
+                <p class="card-text">Gerencie e visualize os doadores cadastrados.</p>
+                <a class="btn btn-light" asp-controller="Admin" asp-action="Doadores">Ver detalhes</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Eventos</h5>
+                <p class="card-text">Gerencie os eventos cadastrados no sistema.</p>
+                <a class="btn btn-dark" asp-controller="Admin" asp-action="Eventos">Ver detalhes</a>
+            </div>
+        </div>
+    </div>
+</div>
