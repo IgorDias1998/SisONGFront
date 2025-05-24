@@ -1,0 +1,60 @@
+﻿@using SisONGFront.Dtos
+@model ProdutoInsumoCreateDto
+
+@{
+    ViewData["Title"] = "Cadastro de Produtos";
+}
+
+<h2 class="mb-4">Cadastro de Produtos de Consumo</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="CadastrarProduto" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Nome" class="form-label">Nome do Produto</label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="QuantidadeDisponivel" class="form-label">Quantidade</label>
+                    <input asp-for="QuantidadeDisponivel" type="number" class="form-control" />
+                    <span asp-validation-for="QuantidadeDisponivel" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="UnidadeMedida" class="form-label">Unidade</label>
+                    <select asp-for="UnidadeMedida" class="form-select">
+                        <option value="">Selecione</option>
+                        <option>Unidade</option>
+                        <option>Kg</option>
+                        <option>L</option>
+                        <option>Caixa</option>
+                        <option>Pacote</option>
+                    </select>
+                    <span asp-validation-for="UnidadeMedida" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Categoria" class="form-label">Categoria</label>
+                <input asp-for="Categoria" class="form-control" />
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @if (TempData["Mensagem"] != null)
+    {
+        <script>
+            alert('@TempData["Mensagem"]');
+        </script>
+    }
+}

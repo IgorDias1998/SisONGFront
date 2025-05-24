@@ -51,11 +51,11 @@ namespace SisONGFront.Controllers
             {
                 // Redireciona baseado no perfil
                 if (User.IsInRole("Voluntario"))
-                    return RedirectToAction("Index", "Voluntario");
+                    return RedirectToAction("Index", "Home");
                 if (User.IsInRole("Doador"))
-                    return RedirectToAction("Index", "Doador");
+                    return RedirectToAction("Index", "Home");
                 if (User.IsInRole("Administrador"))
-                    return RedirectToAction("Index", "Administrador");
+                    return RedirectToAction("Index", "Home");
             }
 
             return View();
