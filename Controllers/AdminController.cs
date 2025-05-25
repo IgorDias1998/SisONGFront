@@ -32,20 +32,91 @@ namespace SisONGFront.Controllers
             return View();
         }
 
-        public IActionResult Voluntarios()
+        [HttpGet]
+        public async Task<IActionResult> Voluntarios()
+        {
+            var voluntarios = await _httpClient.GetFromJsonAsync<List<VoluntarioReadDto>>("/api/Voluntario");
+            return View(voluntarios);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Doadores()
+        {
+            var doadores = await _httpClient.GetFromJsonAsync<List<DoadorReadDto>>("/api/Doador");
+            return View(doadores);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Eventos()
+        {
+            var eventos = await _httpClient.GetFromJsonAsync<List<EventoReadDto>>("/api/Evento");
+            return View(eventos);
+        }
+
+        [HttpGet]
+        public IActionResult CadastrarEvento()
         {
             return View();
         }
 
-        public IActionResult Doadores()
+        [HttpPost]
+        public async Task<IActionResult> CadastrarEvento(EventoCreateDto dto)
         {
-            return View();
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var response = await _httpClient.PostAsJsonAsync("/api/Evento", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Evento cadastrado com sucesso!";
+                return RedirectToAction("Eventos");
+            }
+
+            ModelState.AddModelError(string.Empty, "Erro ao cadastrar evento.");
+            return View(dto);
         }
 
-        public IActionResult Eventos()
+        [HttpGet]
+        public async Task<IActionResult> EditarEvento(int id)
         {
-            return View();
+            var evento = await _httpClient.GetFromJsonAsync<EventoUpdateDto>($"/api/Evento/{id}");
+            if (evento == null) return NotFound();
+            return View(evento);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarEvento(EventoUpdateDto dto)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"/api/Evento/{dto.Id}", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Evento atualizado com sucesso!";
+                return RedirectToAction("Eventos");
+            }
+
+            ModelState.AddModelError(string.Empty, "Erro ao atualizar evento.");
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExcluirEvento(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"/api/Evento/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Evento excluído com sucesso!";
+            }
+            else
+            {
+                TempData["Mensagem"] = "Erro ao excluir evento.";
+            }
+
+            return RedirectToAction("Eventos");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Produtos()
@@ -78,6 +149,58 @@ namespace SisONGFront.Controllers
 
             ModelState.AddModelError(string.Empty, "Erro ao cadastrar produto.");
             return View(dto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditarProduto(int id)
+        {
+            var produto = await _httpClient.GetFromJsonAsync<ProdutoInsumoReadDto>($"/api/ProdutoInsumo/{id}");
+            if (produto == null)
+                return NotFound();
+
+            var dto = new ProdutoInsumoUpdateDto
+            {
+                Id = produto.Id,
+                Nome = produto.Nome,
+                QuantidadeDisponivel = produto.QuantidadeDisponivel,
+                UnidadeMedida = produto.UnidadeMedida,
+                Categoria = produto.Categoria
+            };
+
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarProduto(ProdutoInsumoUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var response = await _httpClient.PutAsJsonAsync($"/api/ProdutoInsumo/{dto.Id}", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Produto atualizado com sucesso!";
+                return RedirectToAction("Produtos");
+            }
+
+            ModelState.AddModelError(string.Empty, "Erro ao atualizar produto.");
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExcluirProduto(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"/api/ProdutoInsumo/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Produto excluído com sucesso!";
+            }
+            else
+            {
+                TempData["Mensagem"] = "Erro ao excluir o produto.";
+            }
+
+            return RedirectToAction("Produtos");
         }
     }
 }

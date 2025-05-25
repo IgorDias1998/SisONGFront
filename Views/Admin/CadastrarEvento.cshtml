@@ -1,0 +1,52 @@
+﻿@model SisONGFront.Dtos.EventoCreateDto
+
+@{
+    ViewData["Title"] = "Cadastrar Novo Evento";
+}
+
+<h2 class="mb-4">Cadastrar Novo Evento</h2>
+
+<form asp-action="CadastrarEvento" method="post" class="shadow p-4 rounded bg-light">
+    <div class="mb-3">
+        <label asp-for="Titulo" class="form-label"></label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Descricao" class="form-label"></label>
+        <textarea asp-for="Descricao" class="form-control"></textarea>
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DataHora" class="form-label"></label>
+        <input asp-for="DataHora" class="form-control" type="datetime-local" />
+        <span asp-validation-for="DataHora" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Local" class="form-label"></label>
+        <input asp-for="Local" class="form-control" />
+        <span asp-validation-for="Local" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-select">
+            <option value="Ativo">Ativo</option>
+            <option value="Concluido">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        <i class="bi bi-check-circle"></i> Salvar
+    </button>
+    <a asp-action="Eventos" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

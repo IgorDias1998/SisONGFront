@@ -1,0 +1,50 @@
+﻿@model SisONGFront.Dtos.EventoUpdateDto
+
+@{
+    ViewData["Title"] = "Editar Evento";
+}
+
+<h2 class="mb-4">Editar Evento</h2>
+
+<form asp-action="EditarEvento" method="post" class="shadow p-4 rounded bg-light">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Titulo" class="form-label">Título</label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Descricao" class="form-label">Descrição</label>
+        <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DataHora" class="form-label">Data e Hora</label>
+        <input asp-for="DataHora" class="form-control" type="datetime-local" />
+        <span asp-validation-for="DataHora" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Local" class="form-label">Local</label>
+        <input asp-for="Local" class="form-control" />
+        <span asp-validation-for="Local" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label">Status</label>
+        <select asp-for="Status" class="form-select">
+            <option value="Ativo">Ativo</option>
+            <option value="Concluido">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save"></i> Salvar Alterações
+    </button>
+    <a asp-action="Eventos" class="btn btn-secondary ms-2">Cancelar</a>
+</form>

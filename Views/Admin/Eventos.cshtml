@@ -1,4 +1,46 @@
-﻿@page
-@model SisONGFront.Views.Admin.EventosModel
+﻿@model IEnumerable<SisONGFront.Dtos.EventoReadDto>
+
 @{
+    ViewData["Title"] = "Eventos - Administração";
 }
+
+<h2 class="mb-4">Gerenciamento de Eventos</h2>
+
+<div class="mb-3">
+    <a asp-controller="Admin" asp-action="CadastrarEvento" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Novo Evento
+    </a>
+</div>
+
+<table class="table table-striped table-bordered shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Título</th>
+            <th>Data e Hora</th>
+            <th>Local</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var evento in Model)
+        {
+            <tr>
+                <td>@evento.Titulo</td>
+                <td>@evento.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@evento.Local</td>
+                <td>@evento.Status</td>
+                <td>
+                    <a asp-action="EditarEvento" asp-route-id="@evento.Id" class="btn btn-primary btn-sm me-2">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                    <form asp-action="ExcluirEvento" asp-route-id="@evento.Id" method="post" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

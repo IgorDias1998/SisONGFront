@@ -1,0 +1,38 @@
+﻿@model SisONGFront.Dtos.ProdutoInsumoUpdateDto
+
+@{
+    ViewData["Title"] = "Editar Produto";
+}
+
+<h2>Editar Produto</h2>
+
+<form asp-action="EditarProduto" method="post" class="mt-4">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QuantidadeDisponivel" class="form-label"></label>
+        <input asp-for="QuantidadeDisponivel" class="form-control" />
+        <span asp-validation-for="QuantidadeDisponivel" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UnidadeMedida" class="form-label"></label>
+        <input asp-for="UnidadeMedida" class="form-control" />
+        <span asp-validation-for="UnidadeMedida" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Categoria" class="form-label"></label>
+        <input asp-for="Categoria" class="form-control" />
+        <span asp-validation-for="Categoria" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Produtos" class="btn btn-secondary">Cancelar</a>
+</form>

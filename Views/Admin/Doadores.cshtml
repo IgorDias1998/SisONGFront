@@ -1,4 +1,29 @@
-﻿@page
-@model SisONGFront.Views.Admin.DoadoresModel
+﻿@model IEnumerable<SisONGFront.Dtos.DoadorReadDto>
+
 @{
+    ViewData["Title"] = "Doadores - Administração";
 }
+
+<h2 class="mb-4">Lista de Doadores</h2>
+
+<table class="table table-striped table-bordered shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doador in Model)
+        {
+            <tr>
+                <td>@doador.Nome</td>
+                <td>@doador.Email</td>
+                <td>@doador.Telefone</td>
+                <td>@doador.Tipo</td>
+            </tr>
+        }
+    </tbody>
+</table>

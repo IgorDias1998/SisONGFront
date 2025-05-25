@@ -1,29 +1,62 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 @model SisONGFront.Dtos.UsuarioDto
 
-<h3>Bem-vindo, @Model?.Nome</h3>
-<p>Perfil: @Model?.Perfil</p>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-@if (Model?.Perfil == "Voluntario")
-{
-    <p>Habilidades: @Model?.Habilidades</p>
-    <p>Disponibilidade: @Model?.Disponibilidade</p>
-    <p>Histórico: @Model?.HistoricoParticipacao</p>
-}
-else if (Model?.Perfil == "Doador")
-{
-    <p>E-mail: @Model?.Email</p>
+            <div class="alert alert-primary d-flex align-items-center shadow-sm mb-4" role="alert">
+                <i class="bi bi-person-check-fill me-3 fs-3"></i>
+                <div>
+                    <div><strong>Bem-vindo, @Model?.Nome!</strong></div>
+                    <div>Perfil: <span class="badge bg-success">@Model?.Perfil</span></div>
+                </div>
+            </div>
 
-    <a class="btn btn-success" asp-controller="Doacao" asp-action="RealizarDoacao">Fazer Doação</a>
-    <a class="btn btn-success" asp-controller="Doacao" asp-action="Historico">Histórico de Doações</a>
-}
-else
-@if (User.IsInRole("Administrador"))
-{
-   <a class="btn btn-success" asp-controller="Admin" asp-action="Dashboard">Acessar Área Administrativa</a>   
-}
+            @if (Model?.Perfil == "Voluntario")
+            {
+                <div class="card shadow-sm border-info mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-info"><i class="bi bi-people-fill me-2"></i> Informações do Voluntário</h5>
+                        <p><strong>Habilidades:</strong> @Model?.Habilidades</p>
+                        <p><strong>Disponibilidade:</strong> @Model?.Disponibilidade</p>
+                        <p><strong>Histórico:</strong> @Model?.HistoricoParticipacao</p>
+                    </div>
+                </div>
+            }
+            else if (Model?.Perfil == "Doador")
+            {
+                <div class="card shadow-sm border-warning mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning"><i class="bi bi-gift-fill me-2"></i> Informações do Doador</h5>
+                        <p><strong>Email:</strong> @Model?.Email</p>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-success me-2" asp-controller="Doacao" asp-action="RealizarDoacao">
+                                <i class="bi bi-cash-coin me-1"></i> Fazer Doação
+                            </a>
+                            <a class="btn btn-outline-success" asp-controller="Doacao" asp-action="Historico">
+                                <i class="bi bi-clock-history me-1"></i> Histórico de Doações
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (User.IsInRole("Administrador"))
+            {
+                <div class="card text-center shadow-sm border-success mb-4">
+                    <div class="card-body">
+                        <i class="bi bi-shield-lock" style="font-size: 2rem; color: green;"></i>
+                        <h5 class="card-title mt-2">Área Administrativa</h5>
+                        <p class="card-text">Gerencie voluntários, doadores, eventos e produtos da plataforma.</p>
+                        <a class="btn btn-success" asp-controller="Admin" asp-action="Dashboard">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Acessar Painel
+                        </a>
+                    </div>
+                </div>
+            }
 
-
+        </div>
+    </div>
+</div>
