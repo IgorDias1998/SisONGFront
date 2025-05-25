@@ -2,50 +2,69 @@
     ViewData["Title"] = "Dashboard - Administração";
 }
 
-<h2>Dashboard</h2>
+<h2 class="mb-4">Dashboard</h2>
 
-<div class="row">
-    <div class="col-md-3">
-        <div class="card bg-primary text-white mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Voluntários</h5>
-                <h2>@ViewBag.VoluntariosCount</h2>
-                <p class="card-text">Cadastrados no sistema.</p>
-                <a class="btn btn-light" asp-controller="Admin" asp-action="Voluntarios">Ver detalhes</a>
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+    <div class="col">
+        <div class="card bg-primary text-white shadow-sm h-100 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-people-fill fs-2 me-2"></i>
+                        <h5 class="card-title mb-0">Voluntários</h5>
+                    </div>
+                    <h2>@ViewBag.VoluntariosCount</h2>
+                    <p class="card-text">Cadastrados no sistema.</p>
+                </div>
+                <a class="btn btn-light mt-3" asp-controller="Admin" asp-action="Voluntarios">Ver detalhes</a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card bg-success text-white mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Doadores</h5>
-                <h2>@ViewBag.DoadoresCount</h2>
-                <p class="card-text">Cadastrados no sistema.</p>
-                <a class="btn btn-light" asp-controller="Admin" asp-action="Doadores">Ver detalhes</a>
+    <div class="col">
+        <div class="card bg-success text-white shadow-sm h-100 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-heart-fill fs-2 me-2"></i>
+                        <h5 class="card-title mb-0">Doadores</h5>
+                    </div>
+                    <h2>@ViewBag.DoadoresCount</h2>
+                    <p class="card-text">Cadastrados no sistema.</p>
+                </div>
+                <a class="btn btn-light mt-3" asp-controller="Admin" asp-action="Doadores">Ver detalhes</a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card bg-warning text-dark mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Eventos</h5>
-                <h2>@ViewBag.EventosCount</h2>
-                <i class="bi bi-calendar-event-fill"></i>
-                <p class="card-text">Gerencie os eventos cadastrados.</p>
-                <a class="btn btn-dark" asp-controller="Admin" asp-action="Eventos">Ver detalhes</a>
+    <div class="col">
+        <div class="card bg-warning text-dark shadow-sm h-100 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-calendar-event-fill fs-2 me-2"></i>
+                        <h5 class="card-title mb-0">Eventos</h5>
+                    </div>
+                    <h2>@ViewBag.EventosCount</h2>
+                    <p class="card-text">Gerencie os eventos cadastrados.</p>
+                </div>
+                <a class="btn btn-dark mt-3" asp-controller="Admin" asp-action="Eventos">Ver detalhes</a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card bg-info text-white mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Produtos</h5>
-                <h2>@ViewBag.ProdutosCount</h2>
-                <p class="card-text">Itens de consumo mensal cadastrados.</p>
-                <a class="btn btn-light" asp-controller="Admin" asp-action="Produtos">Ver detalhes</a>
+    <div class="col">
+        <div class="card bg-info text-white shadow-sm h-100 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-box-seam fs-2 me-2"></i>
+                        <h5 class="card-title mb-0">Produtos</h5>
+                    </div>
+                    <h2>@ViewBag.ProdutosCount</h2>
+                    <p class="card-text">Itens de consumo mensal cadastrados.</p>
+                </div>
+                <a class="btn btn-light mt-3" asp-controller="Admin" asp-action="Produtos">Ver detalhes</a>
             </div>
         </div>
     </div>
