@@ -4,40 +4,51 @@
     ViewData["Title"] = "Realizar Doação";
 }
 
-<h2>Realizar Doação</h2>
-
-<form asp-action="RealizarDoacao" method="post">
-    <div class="form-group">
-        <label asp-for="Tipo">Tipo de Doação</label>
-        <select asp-for="Tipo" class="form-control" id="tipoSelect">
-            <option value="">Selecione...</option>
-            <option value="Financeira">Financeira</option>
-            <option value="Insumo">Insumo</option>
-        </select>
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="display-6"><i class="bi bi-gift-fill me-2"></i>Realizar Doação</h2>
+        <p class="text-muted">Contribua com uma doação financeira ou de insumos.</p>
     </div>
 
-    <div class="form-group" id="valorGroup" style="display:none;">
-        <label asp-for="Valor">Valor (R$)</label>
-        <input asp-for="Valor" class="form-control" />
-    </div>
+    <div class="card shadow p-4">
+        <form asp-action="RealizarDoacao" method="post">
+            <div class="mb-3">
+                <label asp-for="Tipo" class="form-label">Tipo de Doação</label>
+                <select asp-for="Tipo" class="form-select" id="tipoSelect">
+                    <option value="">Selecione...</option>
+                    <option value="Financeira">Financeira</option>
+                    <option value="Insumo">Insumo</option>
+                </select>
+            </div>
 
-    <div class="form-group" id="itemGroup" style="display:none;">
-        <label asp-for="Item">Item</label>
-        <input asp-for="Item" class="form-control" />
-    </div>
+            <div class="mb-3" id="valorGroup" style="display:none;">
+                <label asp-for="Valor" class="form-label">Valor (R$)</label>
+                <input asp-for="Valor" class="form-control" />
+            </div>
 
-    <div class="form-group" id="quantidadeGroup" style="display:none;">
-        <label asp-for="Quantidade">Quantidade</label>
-        <input asp-for="Quantidade" class="form-control" />
-    </div>
+            <div class="mb-3" id="itemGroup" style="display:none;">
+                <label asp-for="Item" class="form-label">Item</label>
+                <input asp-for="Item" class="form-control" />
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Data">Data</label>
-        <input asp-for="Data" type="date" class="form-control" />
-    </div>
+            <div class="mb-3" id="quantidadeGroup" style="display:none;">
+                <label asp-for="Quantidade" class="form-label">Quantidade</label>
+                <input asp-for="Quantidade" class="form-control" />
+            </div>
 
-    <button type="submit" class="btn btn-primary">Enviar Doação</button>
-</form>
+            <div class="mb-3">
+                <label asp-for="Data" class="form-label">Data</label>
+                <input asp-for="Data" type="date" class="form-control" />
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle me-1"></i>Enviar Doação
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     <script>

@@ -1,6 +1,8 @@
 ﻿@model PainelVoluntarioViewModel
 @{
     ViewData["Title"] = "Painel do Voluntário";
+    var contadorEventosFuturos = Model.EventosFuturos.Count;
+    var contadorHistorico = Model.HistoricoParticipacao.Count;
 }
 
 @if (TempData["Erro"] != null)
@@ -8,48 +10,118 @@
     <div class="alert alert-danger">@TempData["Erro"]</div>
 }
 
-<h2>Painel do Voluntário</h2>
+<h2 class="mb-4"><i class="bi bi-person-heart me-2"></i>Painel do Voluntário</h2>
 
-<div class="row">
-    <div class="col-md-6">
-        <h4>Próximos Eventos</h4>
-        <ul class="list-group">
-            @foreach (var evento in Model.EventosFuturos)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div>
-                        <strong>@evento.Titulo</strong><br />
-                        @evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local
-                    </div>
-                    <form asp-action="Participar" asp-controller="Voluntario" method="post" class="ms-3">
-                        <input type="hidden" name="eventoId" value="@evento.Id" />
-                        <button type="submit" class="btn btn-sm btn-primary">Participar</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    </div>
-    <div class="col-md-6">
-        <h4>Histórico de Participação</h4>
-        <ul class="list-group">
-            @foreach (var evento in Model.HistoricoParticipacao)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div>
-                        <strong>@evento.Titulo</strong><br />
-                        @evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local
-                    </div>
+<div class="row g-4">
 
-                    @if (evento.DataHora > DateTime.Now)
-                    {
-                        <form asp-action="CancelarParticipacao" asp-controller="Voluntario" method="post" class="ms-3">
-                            <input type="hidden" name="eventoId" value="@evento.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
-                        </form>
-                    }
-                </li>
-            }
-        </ul>
+    <!-- Próximos Eventos -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-primary">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="bi bi-calendar2-event-fill me-2"></i><strong>Próximos Eventos</strong>
+                </div>
+                <span class="badge bg-light text-primary">@contadorEventosFuturos</span>
+            </div>
+            <div class="card-body">
+                @if (!Model.EventosFuturos.Any())
+                {
+                    <p class="text-muted">Nenhum evento futuro disponível no momento.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var evento in Model.EventosFuturos)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong>@evento.Titulo</strong><br />
+                                    <small class="text-muted">@evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local</small>
+                                </div>
+                                <form asp-action="Participar" asp-controller="Voluntario" method="post" class="ms-3">
+                                    <input type="hidden" name="eventoId" value="@evento.Id" />
+                                    <button type="submit" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Confirmar participação neste evento">
+                                        <i class="bi bi-check2-circle"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
     </div>
 
+    <!-- Histórico de Participação -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-success">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="bi bi-clock-history me-2"></i><strong>Histórico de Participação</strong>
+                </div>
+                <span class="badge bg-light text-success">@contadorHistorico</span>
+            </div>
+            <div class="card-body">
+                @if (!Model.HistoricoParticipacao.Any())
+                {
+                    <p class="text-muted">Você ainda não participou de nenhum evento.</p>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        @foreach (var evento in Model.HistoricoParticipacao)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong>@evento.Titulo</strong><br />
+                                    <small class="text-muted">@evento.DataHora.ToString("dd/MM/yyyy HH:mm") - @evento.Local</small>
+                                </div>
+
+                                @if (evento.DataHora > DateTime.Now)
+                                {
+                                    <button type="button" class="btn btn-outline-danger btn-sm ms-3"
+                                            data-bs-toggle="modal" data-bs-target="#confirmarCancelamentoModal@evento.Id"
+                                            data-bs-toggle="tooltip" title="Cancelar participação">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="confirmarCancelamentoModal@evento.Id" tabindex="-1" aria-labelledby="modalLabel@evento.Id" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalLabel@evento.Id">Cancelar Participação</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Tem certeza que deseja cancelar sua participação em <strong>@evento.Titulo</strong>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                    <form asp-action="CancelarParticipacao" asp-controller="Voluntario" method="post">
+                                                        <input type="hidden" name="eventoId" value="@evento.Id" />
+                                                        <button type="submit" class="btn btn-danger">Cancelar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Inicializa tooltips Bootstrap 5
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+}

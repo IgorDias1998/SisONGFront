@@ -3,28 +3,48 @@
 }
 
 <div class="container mt-5">
-    <div class="text-center mb-4">
-        <h1 class="display-4">Bem-vindo ao SisONG!</h1>
-        <p class="lead">Conectando voluntários e doadores com organizações que fazem a diferença.</p>
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Bem-vindo ao SisONG!</h1>
+        <p class="lead">Conectando <strong>voluntários</strong> e <strong>doadores</strong> com organizações que fazem a diferença.</p>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-4 text-center mb-3">
-            <div class="card shadow p-3">
-                <h4 class="mb-3">Quero ser Voluntário</h4>
-                <a asp-controller="Voluntario" asp-action="CadastrarVoluntario" class="btn btn-primary btn-block">Cadastrar como Voluntário</a>
+    <div class="row justify-content-center g-4">
+        <!-- Voluntário -->
+        <div class="col-md-5">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill display-3 text-primary mb-3"></i>
+                    <h4 class="card-title mb-3">Quero ser Voluntário</h4>
+                    <p class="card-text">Contribua com seu tempo e habilidades em causas que importam.</p>
+                    <a asp-controller="Voluntario" asp-action="CadastrarVoluntario" class="btn btn-primary w-100 mt-3">Cadastrar como Voluntário</a>
+                </div>
             </div>
         </div>
-        <div class="col-md-4 text-center mb-3">
-            <div class="card shadow p-3">
-                <h4 class="mb-3">Quero ser Doador</h4>
-                <a asp-controller="Doador" asp-action="CadastrarDoador" class="btn btn-success btn-block">Cadastrar como Doador</a>
+
+        <!-- Doador -->
+        <div class="col-md-5">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+                <div class="card-body text-center">
+                    <i class="bi bi-heart-fill display-3 text-danger mb-3"></i>
+                    <h4 class="card-title mb-3">Quero ser Doador</h4>
+                    <p class="card-text">Ajude financeiramente ou com insumos as ações sociais cadastradas.</p>
+                    <a asp-controller="Doador" asp-action="CadastrarDoador" class="btn btn-success w-100 mt-3">Cadastrar como Doador</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="text-center mt-4">
-        <p>Já possui uma conta?</p>
-        <a asp-controller="Login" asp-action="Index" class="btn btn-outline-secondary">Entrar</a>
+    <div class="text-center mt-5">
+        <p class="mb-2">Já possui uma conta?</p>
+        <a asp-controller="Login" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
+        </a>
     </div>
 </div>
+
+<style>
+    .transition-hover:hover {
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+</style>

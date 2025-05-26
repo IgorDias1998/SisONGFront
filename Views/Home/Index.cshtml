@@ -22,7 +22,16 @@
                         <h5 class="card-title text-info"><i class="bi bi-people-fill me-2"></i> Informações do Voluntário</h5>
                         <p><strong>Habilidades:</strong> @Model?.Habilidades</p>
                         <p><strong>Disponibilidade:</strong> @Model?.Disponibilidade</p>
-                        <p><strong>Histórico:</strong> @Model?.HistoricoParticipacao</p>
+                    </div>
+                </div>
+                <div class="card text-center shadow-sm border-success mb-4">
+                    <div class="card-body">
+                        <i class="bi bi-calendar-heart" style="font-size: 2rem; color: green;"></i>
+                        <h5 class="card-title mt-2">Área do voluntário</h5>
+                        <p class="card-text">Acesse e gerencie os eventos disponíveis.</p>
+                        <a class="btn btn-success" asp-controller="Voluntario" asp-action="Index">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Acessar Painel
+                        </a>
                     </div>
                 </div>
             }
