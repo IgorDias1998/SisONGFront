@@ -1,0 +1,40 @@
+﻿@using SisONGFront.Enum
+@model SisONGFront.Dtos.RelatorioCreateDto
+
+@{
+    ViewData["Title"] = "Gerar Relatório";
+}
+
+<div class="container mt-4">
+    <h2>Gerar Relatório</h2>
+    <form asp-action="CadastrarRelatorio" method="post">
+        <div class="mb-3">
+            <label asp-for="Tipo" class="form-label">Tipo do Relatório</label>
+            <select asp-for="Tipo" class="form-select">
+                <option value="">Selecione o tipo</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Voluntariado">Voluntariado</option>
+                <option value="Eventos">Eventos</option>
+            </select>
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DataInicio" class="form-label"></label>
+            <input asp-for="DataInicio" class="form-control" type="date" />
+            <span asp-validation-for="DataInicio" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DataFim" class="form-label"></label>
+            <input asp-for="DataFim" class="form-control" type="date" />
+            <span asp-validation-for="DataFim" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Gerar Relatório</button>
+        <a asp-action="Relatorios" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -202,5 +202,51 @@ namespace SisONGFront.Controllers
 
             return RedirectToAction("Produtos");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Relatorios()
+        {
+            var relatorios = await _httpClient.GetFromJsonAsync<List<RelatorioReadDto>>("/api/Relatorio");
+            return View(relatorios ?? new List<RelatorioReadDto>());
+        }
+
+        [HttpGet]
+        public IActionResult CadastrarRelatorio()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarRelatorio(RelatorioCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var response = await _httpClient.PostAsJsonAsync("/api/Relatorio", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Relatório gerado com sucesso!";
+                return RedirectToAction("Relatorios");
+            }
+
+            ModelState.AddModelError(string.Empty, "Erro ao gerar relatório.");
+            return View(dto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VisualizarRelatorio(int id)
+        {
+            var response = await _httpClient.GetAsync($"/api/Relatorio/{id}/pdf");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Erro ao carregar o relatório em PDF.";
+                return RedirectToAction("Relatorios");
+            }
+
+            var content = await response.Content.ReadAsByteArrayAsync();
+            return File(content, "application/pdf");
+        }
     }
 }
