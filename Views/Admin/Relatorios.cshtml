@@ -21,6 +21,7 @@
                 <th>Tipo</th>
                 <th>Data de Geração</th>
                 <th>Conteúdo</th>
+                <th>Download</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +32,7 @@
                     <td>@relatorio.DataGeracao.ToString("dd/MM/yyyy")</td>
                     <td>@relatorio.Conteudo</td>
                     <td>
-                        <a asp-action="VisualizarRelatorio" asp-route-id="@relatorio.Id" class="btn btn-sm btn-primary" target="_blank">
+                        <a asp-action="VisualizarRelatorio" asp-route-id="@relatorio.Id" class="btn btn-outline-dark" target="_blank">
                             Visualizar PDF
                         </a>
                     </td>

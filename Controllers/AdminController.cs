@@ -248,5 +248,16 @@ namespace SisONGFront.Controllers
             var content = await response.Content.ReadAsByteArrayAsync();
             return File(content, "application/pdf");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadRelatorio(int id)
+        {
+            var response = await _httpClient.GetAsync($"/api/Relatorio/{id}/pdf");
+            if (!response.IsSuccessStatusCode)
+                return NotFound();
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            return File(bytes, "application/pdf", $"relatorio_{id}.pdf");
+        }
     }
 }
