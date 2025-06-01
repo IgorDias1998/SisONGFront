@@ -259,5 +259,63 @@ namespace SisONGFront.Controllers
             var bytes = await response.Content.ReadAsByteArrayAsync();
             return File(bytes, "application/pdf", $"relatorio_{id}.pdf");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> PontoColeta()
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<PontoColetaReadDto>>("/api/PontoColeta");
+            return View(response);
+        }
+
+        public IActionResult CadastrarPontoColeta()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarPontoColeta(PontoColetaCreateDto dto)
+        {
+            if (!ModelState.IsValid) return View(dto);
+
+            var response = await _httpClient.PostAsJsonAsync("/api/PontoColeta", dto);
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("PontoColeta");
+
+            TempData["Erro"] = "Erro ao cadastrar ponto de coleta.";
+            return View(dto);
+        }
+
+        public async Task<IActionResult> EditarPontoColeta(int id)
+        {
+            var ponto = await _httpClient.GetFromJsonAsync<PontoColetaReadDto>($"/api/PontoColeta/{id}");
+            if (ponto == null) return NotFound();
+
+            var updateDto = new PontoColetaUpdateDto
+            {
+                NomeLocal = ponto.NomeLocal,
+                Endereco = ponto.Endereco
+            };
+
+            return View(updateDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarPontoColeta(PontoColetaUpdateDto dto)
+        {
+            if (!ModelState.IsValid) return View(dto);
+
+            var response = await _httpClient.PutAsJsonAsync($"/api/PontoColeta/{dto.Id}", dto);
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("PontoColeta");
+
+            TempData["Erro"] = "Erro ao editar ponto de coleta.";
+            return View(dto);
+        }
+
+        public async Task<IActionResult> ExcluirPontoColeta(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"/api/PontoColeta/{id}");
+            return RedirectToAction("PontoColeta");
+        }
     }
 }

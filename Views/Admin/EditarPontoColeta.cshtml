@@ -1,0 +1,43 @@
+﻿@using SisONGFront.Dtos
+@model PontoColetaUpdateDto
+
+@{
+    ViewData["Title"] = "Editar Ponto de Coleta";
+}
+
+<h2 class="mb-4">Editar Ponto de Coleta</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="EditarPontoColeta" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="NomeLocal" class="form-label">Nome do Local</label>
+                    <input asp-for="NomeLocal" class="form-control" />
+                    <span asp-validation-for="NomeLocal" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Endereco" class="form-label">Endereço</label>
+                <input asp-for="Endereco" class="form-control" />
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @if (TempData["Mensagem"] != null)
+    {
+        <script>
+            alert('@TempData["Mensagem"]');
+        </script>
+    }
+}
