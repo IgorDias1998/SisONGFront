@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SisONGFront.Dtos;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SisONGFront.Dtos;
 
 namespace SisONGFront.Controllers
 {
@@ -15,18 +17,21 @@ namespace SisONGFront.Controllers
         }
 
         [HttpGet]
-        public IActionResult RealizarDoacao()
+        public async Task<IActionResult> RealizarDoacao()
         {
-            return View(new DoacaoCreateDto { Data = DateTime.Now });
+            var dto = new DoacaoCreateDto { Data = DateTime.Now };
+            await ObterPontosColetaAsync(dto);
+            return View(dto);
         }
 
         [HttpPost]
         public async Task<IActionResult> RealizarDoacao(DoacaoCreateDto dto)
         {
+            await ObterPontosColetaAsync(dto);
+
             if (!ModelState.IsValid)
                 return View(dto);
 
-            // Pega o ID do doador logado
             var doadorIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UsuarioId")?.Value;
             if (doadorIdClaim == null)
             {
@@ -47,6 +52,38 @@ namespace SisONGFront.Controllers
             ModelState.AddModelError("", "Erro ao registrar doação.");
             return View(dto);
         }
+
+        // Método helper para buscar pontos
+        private async Task ObterPontosColetaAsync(DoacaoCreateDto dto)
+        {
+            var resposta = await _httpClient.GetAsync("/api/PontoColeta");
+            if (!resposta.IsSuccessStatusCode)
+            {
+                dto.PontosColeta = new List<SelectListItem>();
+                dto.PontosColetaExibir = new List<PontoColetaReadDto>();
+                return;
+            }
+
+            var json = await resposta.Content.ReadAsStringAsync();
+            var pontos = JsonSerializer.Deserialize<List<PontoColetaReadDto>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            dto.PontosColeta = pontos.Select(p => new SelectListItem
+            {
+                Value = p.Id.ToString(),
+                Text = p.NomeLocal
+            }).ToList();
+
+            dto.PontosColetaExibir = pontos.Select(p => new PontoColetaReadDto
+            {
+                Id = p.Id,
+                NomeLocal = p.NomeLocal,
+                Endereco = p.Endereco
+            }).ToList();
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Historico()

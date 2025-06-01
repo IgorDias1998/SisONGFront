@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SisONGFront.Dtos
 {
@@ -18,5 +19,11 @@ namespace SisONGFront.Dtos
         public int? Quantidade { get; set; }
 
         public DateTime? Data { get; set; }
+
+        //Ponto coleta
+        public int? PontoColetaId { get; set; }
+
+        public List<SelectListItem> PontosColeta { get; set; } = new();
+        public List<PontoColetaReadDto> PontosColetaExibir { get; set; } = new();
     }
 }
