@@ -79,33 +79,11 @@
 
                                 @if (evento.DataHora > DateTime.Now)
                                 {
-                                    <button type="button" class="btn btn-outline-danger btn-sm ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#confirmarCancelamentoModal@evento.Id"
-                                            data-bs-toggle="tooltip" title="Cancelar participação">
-                                        <i class="bi bi-x-circle"></i>
-                                    </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="confirmarCancelamentoModal@evento.Id" tabindex="-1" aria-labelledby="modalLabel@evento.Id" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="modalLabel@evento.Id">Cancelar Participação</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Tem certeza que deseja cancelar sua participação em <strong>@evento.Titulo</strong>?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                                    <form asp-action="CancelarParticipacao" asp-controller="Voluntario" method="post">
-                                                        <input type="hidden" name="eventoId" value="@evento.Id" />
-                                                        <button type="submit" class="btn btn-danger">Cancelar</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <form asp-action="CancelarParticipacao" asp-controller="Voluntario" method="post" class="ms-3" asp-route-eventoId="@evento.Id">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip" title="Cancelar participação">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </form>
                                 }
                             </li>
                         }
