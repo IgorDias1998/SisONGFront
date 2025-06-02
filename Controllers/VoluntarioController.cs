@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using SisONGFront.Dtos;
 using SisONGFront.Models;
@@ -110,5 +111,30 @@ namespace SisONGFront.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Painel()
+        {
+            var usuarioId = User.FindFirst("UsuarioId")?.Value; // Método que pega o ID do usuário logado
+            var notificacoes = new List<NotificacaoDto>();
+
+            var resposta = await _httpClient.GetAsync($"/api/Notificacao/usuario/{usuarioId}");
+            if (resposta.IsSuccessStatusCode)
+            {
+                var json = await resposta.Content.ReadAsStringAsync();
+                notificacoes = JsonSerializer.Deserialize<List<NotificacaoDto>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+            }
+
+            var model = new PainelVoluntarioViewModel
+            {
+                Notificacoes = notificacoes,
+                // outros dados do painel...
+            };
+
+            return View(model);
+        }
+
     }
 }

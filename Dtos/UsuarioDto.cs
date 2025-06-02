@@ -22,5 +22,8 @@ namespace SisONGFront.Dtos
 
         // Campos de Administrador
         public string? Cargo { get; set; }
+
+        public List<NotificacaoDto> Notificacoes { get; set; } = new();
+
     }
 }

@@ -1,0 +1,60 @@
+﻿@using SisONGFront.Dtos
+@model NotificacaoGrupoDto
+@{
+    ViewData["Title"] = "Enviar Notificação";
+}
+
+<div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Enviar Notificação</h4>
+</div>
+
+<div class="card-body">
+    <form asp-action="Enviar" method="post">
+        <div class="mb-3 col-md-6">
+            <label asp-for="PerfilDestino" class="form-label">Tipo de Usuário</label>
+            <select asp-for="PerfilDestino" class="form-select">
+                <option value="">Selecione...</option>
+                <option value="Voluntario">Voluntário</option>
+                <option value="Doador">Doador</option>
+            </select>
+            <span asp-validation-for="PerfilDestino" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-md-6">
+            <label asp-for="Tipo" class="form-label">Tipo de Notificação</label>
+            <select asp-for="Tipo" class="form-select">
+                <option value="">Selecione...</option>
+                <option value="Lembrete de Evento">Lembrete de Evento</option>
+                <option value="Confirmação de Doação">Confirmação de Doação</option>
+                <option value="Alerta de Insumo">Alerta de Insumo</option>
+            </select>
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Mensagem" class="form-label">Mensagem</label>
+            <textarea asp-for="Mensagem" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Mensagem" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-send"></i> Enviar Notificação
+        </button>
+    </form>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger mt-3">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

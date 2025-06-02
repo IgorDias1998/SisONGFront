@@ -6,5 +6,6 @@ namespace SisONGFront.Models
     {
         public List<EventoDto> EventosFuturos { get; set; } = new();
         public List<EventoDto> HistoricoParticipacao { get; set; } = new();
+        public List<NotificacaoDto> Notificacoes { get; set; } = new();
     }
 }
