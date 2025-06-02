@@ -115,6 +115,13 @@ namespace SisONGFront.Controllers
         public async Task<IActionResult> Painel()
         {
             var usuarioId = User.FindFirst("UsuarioId")?.Value; // Método que pega o ID do usuário logado
+            if (string.IsNullOrEmpty(usuarioId))
+            {
+                // debug aqui, pode estar faltando o claim "UsuarioId" na autenticação
+                Console.WriteLine("Usuário não autenticado ou claim UsuarioId não encontrado");
+                return RedirectToAction("Login"); // Exemplo
+            }
+
             var notificacoes = new List<NotificacaoDto>();
 
             var resposta = await _httpClient.GetAsync($"/api/Notificacao/usuario/{usuarioId}");
@@ -130,11 +137,9 @@ namespace SisONGFront.Controllers
             var model = new PainelVoluntarioViewModel
             {
                 Notificacoes = notificacoes,
-                // outros dados do painel...
             };
 
             return View(model);
         }
-
     }
 }

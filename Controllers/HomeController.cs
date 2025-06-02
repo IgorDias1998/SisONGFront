@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 using SisONGFront.Dtos;
 using SisONGFront.Models;
-using QRCoder;
 
 namespace SisONGFront.Controllers
 {
@@ -17,7 +18,7 @@ namespace SisONGFront.Controllers
             _httpClient = httpClient;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -43,6 +44,21 @@ namespace SisONGFront.Controllers
                 Endereco = User.FindFirst("Endereco")?.Value,
                 Cargo = User.FindFirst("Cargo")?.Value
             };
+
+            // Buscar notificações do usuário via API
+            var resposta = await _httpClient.GetAsync($"/api/Notificacao/usuario/{usuario.Id}");
+            if (resposta.IsSuccessStatusCode)
+            {
+                var json = await resposta.Content.ReadAsStringAsync();
+                usuario.Notificacoes = JsonSerializer.Deserialize<List<NotificacaoDto>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new List<NotificacaoDto>();
+            }
+            else
+            {
+                usuario.Notificacoes = new List<NotificacaoDto>(); // lista vazia em caso de erro
+            }
 
             return View(usuario);
         }
