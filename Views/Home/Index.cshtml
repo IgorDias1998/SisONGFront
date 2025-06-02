@@ -65,6 +65,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="card text-center shadow-sm border-info mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-info"><i class="bi bi-people-fill me-2"></i> Notificações</h5>
+                        <ul>
+                            @foreach (var notif in Model.Notificacoes)
+                            {
+                                <li>
+                                    <strong>@notif.Tipo</strong> - @notif.Mensagem <br />
+                                    <small>@notif.DataEnvio.ToString("dd/MM/yyyy HH:mm")</small>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             }
             else if (User.IsInRole("Administrador"))
             {
