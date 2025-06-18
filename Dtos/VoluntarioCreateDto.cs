@@ -22,6 +22,6 @@ namespace SisONGFront.Dtos
         [Required]
         public string Disponibilidade { get; set; }
 
-        public string HistoricoParticipacao { get; set; }
+        public string HistoricoParticipacao { get; set; } = "0";
     }
 }
