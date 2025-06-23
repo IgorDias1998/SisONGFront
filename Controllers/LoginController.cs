@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Http.Json;
+using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using SisONGFront.Dtos;
-using System.Net.Http.Json;
 
 
 namespace SisONG.MVC.Controllers
@@ -29,8 +30,21 @@ namespace SisONG.MVC.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("", "Email ou senha inválidos.");
-                return View();
+                var erroStr = await response.Content.ReadAsStringAsync();
+                string mensagemErro;
+
+                try
+                {
+                    var erroObj = JsonSerializer.Deserialize<Dictionary<string, string>>(erroStr);
+                    mensagemErro = erroObj?.GetValueOrDefault("mensagem") ?? "Email ou senha inválidos.";
+                }
+                catch
+                {
+                    mensagemErro = "Email ou senha inválidos.";
+                }
+
+                ModelState.AddModelError(string.Empty, mensagemErro);
+                return View(loginDto);
             }
 
             var usuario = await response.Content.ReadFromJsonAsync<UsuarioDto>();
@@ -43,7 +57,6 @@ namespace SisONG.MVC.Controllers
                 new Claim("UsuarioId", usuario.Id.ToString())
             };
 
-            // Adiciona claims extras do voluntário, se existir
             if (usuario.Perfil == "Voluntario")
             {
                 if (!string.IsNullOrEmpty(usuario.Habilidades))

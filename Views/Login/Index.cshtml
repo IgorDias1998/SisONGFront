@@ -52,6 +52,19 @@
         <p class="text-muted">Acesse sua conta para continuar</p>
     </div>
 
+    @{
+        var errosGerais = ViewData.ModelState[string.Empty]?.Errors;
+        if (errosGerais != null && errosGerais.Count > 0)
+        {
+            <div class="alert alert-danger">
+                @foreach (var erro in errosGerais)
+                {
+                    <p class="mb-0">@erro.ErrorMessage</p>
+                }
+            </div>
+        }
+    }
+
     <form asp-action="Index" method="post">
         <div class="mb-3">
             <label asp-for="Email" class="form-label"></label>
