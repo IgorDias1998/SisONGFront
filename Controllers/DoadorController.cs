@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using SisONGFront.Dtos;
-using System.Net.Http.Json;
 
 namespace SisONGFront.Controllers
 {
@@ -22,9 +23,6 @@ namespace SisONGFront.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarDoador(DoadorCreateDto dto)
         {
-            if (!ModelState.IsValid)
-                return View(dto);
-
             var response = await _httpClient.PostAsJsonAsync("/api/Doador", dto);
 
             if (response.IsSuccessStatusCode)
@@ -33,8 +31,24 @@ namespace SisONGFront.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            ModelState.AddModelError("", "Erro ao cadastrar doador.");
-            return View(dto);
+            else
+            {
+                var erroStr = await response.Content.ReadAsStringAsync();
+                string mensagemErro;
+
+                try
+                {
+                    var erroObj = JsonSerializer.Deserialize<Dictionary<string, string>>(erroStr);
+                    mensagemErro = erroObj?.GetValueOrDefault("mensagem") ?? "Erro ao cadastrar doador.";
+                }
+                catch (JsonException)
+                {
+                    mensagemErro = erroStr;
+                }
+
+                ModelState.AddModelError("Email", mensagemErro);
+                return View(dto);
+            }
         }
     }
 }

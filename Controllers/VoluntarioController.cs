@@ -52,9 +52,6 @@ namespace SisONGFront.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarVoluntario(VoluntarioCreateDto dto)
         {
-            if (!ModelState.IsValid)
-                return View(dto);
-
             var response = await _httpClient.PostAsJsonAsync("/api/Voluntario", dto);
 
             if (response.IsSuccessStatusCode)
@@ -62,9 +59,24 @@ namespace SisONGFront.Controllers
                 TempData["MensagemSucesso"] = "Voluntário cadastrado com sucesso!";
                 return RedirectToAction("Index", "Login");
             }
+            else
+            {
+                var erroStr = await response.Content.ReadAsStringAsync();
+                string mensagemErro;
 
-            ModelState.AddModelError("", "Erro ao cadastrar voluntário.");
-            return View(dto);
+                try
+                {
+                    var erroObj = JsonSerializer.Deserialize<Dictionary<string, string>>(erroStr);
+                    mensagemErro = erroObj?.GetValueOrDefault("mensagem") ?? "Erro ao cadastrar voluntário.";
+                }
+                catch (JsonException)
+                {
+                    mensagemErro = erroStr;
+                }
+
+                ModelState.AddModelError("Email", mensagemErro);
+                return View(dto);
+            }
         }
 
         [HttpPost]
