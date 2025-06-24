@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SisONGFront.Dtos;
@@ -204,11 +205,26 @@ namespace SisONGFront.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Relatorios()
+        public async Task<IActionResult> Relatorios(int page = 1)
         {
-            var relatorios = await _httpClient.GetFromJsonAsync<List<RelatorioReadDto>>("/api/Relatorio");
-            return View(relatorios ?? new List<RelatorioReadDto>());
+            var response = await _httpClient.GetAsync($"/api/Relatorio/paginado?page={page}&pageSize=5");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Mensagem"] = "Erro ao carregar relatórios.";
+                return View(new RelatorioPaginadoViewModel());
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var resultado = JsonSerializer.Deserialize<RelatorioPaginadoViewModel>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return View(resultado);
         }
+
 
         [HttpGet]
         public IActionResult CadastrarRelatorio()
