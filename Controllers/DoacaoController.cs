@@ -20,7 +20,12 @@ namespace SisONGFront.Controllers
         public async Task<IActionResult> RealizarDoacao()
         {
             var dto = new DoacaoCreateDto { Data = DateTime.Now };
+
             await ObterPontosColetaAsync(dto);
+
+            var produtos = await _httpClient.GetFromJsonAsync<List<ProdutoInsumoReadDto>>("/api/ProdutoInsumo");
+            ViewBag.Produtos = produtos ?? new List<ProdutoInsumoReadDto>();
+
             return View(dto);
         }
 
@@ -30,11 +35,17 @@ namespace SisONGFront.Controllers
             await ObterPontosColetaAsync(dto);
 
             if (!ModelState.IsValid)
+            {
+                var produtos = await _httpClient.GetFromJsonAsync<List<ProdutoInsumoReadDto>>("/api/ProdutoInsumo");
+                ViewBag.Produtos = produtos ?? new List<ProdutoInsumoReadDto>();
                 return View(dto);
+            }
 
             var doadorIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UsuarioId")?.Value;
             if (doadorIdClaim == null)
             {
+                var produtos = await _httpClient.GetFromJsonAsync<List<ProdutoInsumoReadDto>>("/api/ProdutoInsumo");
+                ViewBag.Produtos = produtos ?? new List<ProdutoInsumoReadDto>();
                 ModelState.AddModelError("", "Usuário não autenticado.");
                 return View(dto);
             }
@@ -49,9 +60,12 @@ namespace SisONGFront.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var produtosErro = await _httpClient.GetFromJsonAsync<List<ProdutoInsumoReadDto>>("/api/ProdutoInsumo");
+            ViewBag.Produtos = produtosErro ?? new List<ProdutoInsumoReadDto>();
             ModelState.AddModelError("", "Erro ao registrar doação.");
             return View(dto);
         }
+
 
         // Método helper para buscar pontos
         private async Task ObterPontosColetaAsync(DoacaoCreateDto dto)

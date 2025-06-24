@@ -28,7 +28,14 @@
 
             <div class="mb-3" id="itemGroup" style="display:none;">
                 <label asp-for="Item" class="form-label">Item</label>
-                <input asp-for="Item" class="form-control" />
+                <select asp-for="Item" class="form-select">
+                    <option value="">Selecione um item</option>
+                    @foreach (var produto in ViewBag.Produtos as List<SisONGFront.Dtos.ProdutoInsumoReadDto>)
+                    {
+                        <option value="@produto.Nome">@produto.Nome</option>
+                    }
+                </select>
+                <span asp-validation-for="Item" class="text-danger small"></span>
             </div>
 
             <div class="mb-3" id="quantidadeGroup" style="display:none;">
