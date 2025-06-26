@@ -36,7 +36,7 @@
                             <tr>
                                 <td>@doacao.Tipo</td>
                                 <td>@(doacao.Valor?.ToString("C") ?? "-")</td>
-                                <td>@doacao.Item ?? "-"</td>
+                                <td>@doacao.Item</td>
                                 <td>@(doacao.Quantidade?.ToString() ?? "-")</td>
                                 <td>@doacao.Data?.ToString("dd/MM/yyyy")</td>
                             </tr>
