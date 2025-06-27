@@ -41,6 +41,12 @@
                     </form>
                 </td>
             </tr>
+            @if (TempData["Mensagem"] != null)
+            {
+                <div id="alertMensagem" class="alert alert-success fixed-top m-3 shadow" role="alert">
+                    @TempData["Mensagem"]
+                </div>
+            }
         }
     </tbody>
 </table>

@@ -49,12 +49,13 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    @if (TempData["Mensagem"] != null)
-    {
-        <script>
-            alert('@TempData["Mensagem"]');
-        </script>
-    }
+    <script>
+        setTimeout(function () {
+            var alertBox = document.getElementById('alertMensagem');
+            if (alertBox) {
+                alertBox.style.display = 'none';
+            }
+        }, 3000); // 3 segundos
+    </script>
 }
+

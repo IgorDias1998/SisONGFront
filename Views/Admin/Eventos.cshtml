@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SisONGFront.Dtos.EventoReadDto>
+﻿@model IEnumerable<SisONGFront.Dtos.EventoComContagemDto>
 
 @{
     ViewData["Title"] = "Eventos - Administração";
@@ -18,8 +18,8 @@
             <th>Título</th>
             <th>Data e Hora</th>
             <th>Local</th>
-            <th>Status</th>
-            <th>Ações</th>
+            <th>Participantes</th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -29,7 +29,7 @@
                 <td>@evento.Titulo</td>
                 <td>@evento.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>@evento.Local</td>
-                <td>@evento.Status</td>
+                <td>@evento.QuantidadeVoluntarios</td>
                 <td>
                     <a asp-action="EditarEvento" asp-route-id="@evento.Id" class="btn btn-primary btn-sm me-2">
                         <i class="bi bi-pencil-square"></i> Editar

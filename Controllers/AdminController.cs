@@ -50,9 +50,10 @@ namespace SisONGFront.Controllers
         [HttpGet]
         public async Task<IActionResult> Eventos()
         {
-            var eventos = await _httpClient.GetFromJsonAsync<List<EventoReadDto>>("/api/Evento");
-            return View(eventos);
+            var eventos = await _httpClient.GetFromJsonAsync<List<EventoComContagemDto>>("/api/Evento/com-contagem");
+            return View(eventos ?? new List<EventoComContagemDto>());
         }
+
 
         [HttpGet]
         public IActionResult CadastrarEvento()
